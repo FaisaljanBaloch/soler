@@ -1,0 +1,21 @@
+{
+  "@@locale": "it",
+  "appTitle": "Soler",
+  "selectCity": "Seleziona Città",
+  "search": "Cerca",
+  "settings": "Impostazioni",
+  "location": "Posizione",
+  "language": "Lingua",
+  "about": "Informazioni",
+  "english": "Inglese",
+  "italian": "Italiano",
+  "aboutText": "Questa app è stata sviluppata per l'hackathon CerHack 2024, organizzato dal centro di ricerca CERTH. Lo sviluppatore è Faisal J.",
+  "solarForecast": "Previsione Solare",
+  "updated": "Aggiornato",
+  "now": "Adesso",
+  "noForecast": "Nessuna previsione disponibile.",
+  "loading": "Caricamento...",
+  "error": "Errore",
+  "noCitySelected": "Nessuna città selezionata",
+  "pullToRefresh": "Tira per aggiornare"
+}

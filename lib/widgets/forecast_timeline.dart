@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:soler/l10n/app_localizations.dart';
 import '../models/solar_forecast.dart';
 
 /// Widget that displays hourly solar forecast as a horizontally scrollable timeline
@@ -7,33 +8,33 @@ import '../models/solar_forecast.dart';
 class ForecastTimeline extends StatelessWidget {
   final ForecastData forecastData;
 
-  const ForecastTimeline({
-    super.key,
-    required this.forecastData,
-  });
+  const ForecastTimeline({super.key, required this.forecastData});
 
   /// Get color based on GHI intensity value
-  /// Color gradient: yellow (low) -> orange -> red (high)
-  Color _getColorForIntensity(double ghi, double maxGhi) {
-    if (maxGhi == 0) return Colors.grey[200]!;
+  /// Color gradient: light green (low) -> green -> dark green (high)
+  Color _getColorForIntensity(
+    double ghi,
+    double maxGhi,
+    ColorScheme colorScheme,
+  ) {
+    if (maxGhi == 0) return colorScheme.surfaceContainerHighest;
 
     final normalizedValue = (ghi / maxGhi).clamp(0.0, 1.0);
+    final lowColor = colorScheme.surfaceContainerHighest;
+    final midColor = colorScheme.secondary;
+    final highColor = colorScheme.primary;
 
     if (normalizedValue < 0.3) {
-      // Light yellow for low values
-      return Color.lerp(Colors.grey[300]!, Colors.yellow.shade300, normalizedValue / 0.3)!;
+      // Light green for low values
+      return Color.lerp(lowColor, midColor, normalizedValue / 0.3)!;
     } else if (normalizedValue < 0.6) {
-      // Yellow to orange
-      return Color.lerp(
-        Colors.yellow.shade300,
-        Colors.orange.shade400,
-        (normalizedValue - 0.3) / 0.3,
-      )!;
+      // Light green to green
+      return Color.lerp(midColor, highColor, (normalizedValue - 0.3) / 0.3)!;
     } else {
-      // Orange to red
+      // Green to dark green
       return Color.lerp(
-        Colors.orange.shade400,
-        Colors.red.shade600,
+        highColor,
+        highColor.withValues(alpha: 0.9),
         (normalizedValue - 0.6) / 0.4,
       )!;
     }
@@ -42,16 +43,29 @@ class ForecastTimeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final maxGhi = forecastData.maxGhi;
+    final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+    final now = DateTime.now();
+    final startHour = DateTime(now.year, now.month, now.day, now.hour);
+    final remainingForecasts = forecastData.hourlyForecasts
+        .where((forecast) => !forecast.timestamp.isBefore(startHour))
+        .toList();
+    final displayForecasts = remainingForecasts.isNotEmpty
+        ? remainingForecasts
+        : forecastData.hourlyForecasts;
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         children: List.generate(
-          forecastData.hourlyForecasts.length,
+          displayForecasts.length,
           (index) => _buildHourlyItem(
-            forecastData.hourlyForecasts[index],
+            displayForecasts[index],
             maxGhi,
+            colorScheme,
             context,
+            l10n,
+            isNowLabel: index == 0,
           ),
         ),
       ),
@@ -62,11 +76,15 @@ class ForecastTimeline extends StatelessWidget {
   Widget _buildHourlyItem(
     SolarForecastHour forecast,
     double maxGhi,
+    ColorScheme colorScheme,
     BuildContext context,
-  ) {
-    final color = _getColorForIntensity(forecast.ghi, maxGhi);
+    AppLocalizations l10n, {
+    bool isNowLabel = false,
+  }) {
+    final color = _getColorForIntensity(forecast.ghi, maxGhi, colorScheme);
     final barHeight = (forecast.ghi / (maxGhi + 100)) * 150; // Max height 150
     final timeFormat = DateFormat('HH:mm');
+    final label = isNowLabel ? l10n.now : timeFormat.format(forecast.timestamp);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -77,8 +95,10 @@ class ForecastTimeline extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Text(
-              timeFormat.format(forecast.timestamp),
-              style: Theme.of(context).textTheme.labelSmall,
+              label,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
           // Bar chart
@@ -91,10 +111,7 @@ class ForecastTimeline extends StatelessWidget {
                 topLeft: Radius.circular(4),
                 topRight: Radius.circular(4),
               ),
-              border: Border.all(
-                color: color.withValues(alpha: 0.3),
-                width: 1,
-              ),
+              border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
             ),
           ),
           // GHI value
@@ -103,8 +120,9 @@ class ForecastTimeline extends StatelessWidget {
             child: Text(
               forecast.ghi.toStringAsFixed(0),
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                fontWeight: FontWeight.bold,
+                color: colorScheme.onSurface,
+              ),
             ),
           ),
         ],
@@ -116,78 +134,112 @@ class ForecastTimeline extends StatelessWidget {
 /// Header widget showing location and last updated time
 class ForecastHeader extends StatelessWidget {
   final ForecastData forecastData;
+  final String cityName;
 
   const ForecastHeader({
     super.key,
     required this.forecastData,
+    required this.cityName,
   });
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat = DateFormat('HH:mm:ss');
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Today\'s Solar Forecast',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Location: ${forecastData.latitude.toStringAsFixed(2)}°, ${forecastData.longitude.toStringAsFixed(2)}° • ${forecastData.timezone}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[600],
-                ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            'Updated: ${timeFormat.format(forecastData.generatedAt)}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[500],
-                ),
-          ),
-          const SizedBox(height: 8),
-          // Legend for color intensity
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                _buildLegendItem('Low', Colors.yellow.shade300),
-                const SizedBox(width: 16),
-                _buildLegendItem('Medium', Colors.orange.shade400),
-                const SizedBox(width: 16),
-                _buildLegendItem('High', Colors.red.shade600),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.solarForecast,
+                    style: textTheme.labelLarge?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_on,
+                        color: colorScheme.primary,
+                        size: 28,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        cityName,
+                        style: textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.refresh,
+                        size: 16,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${l10n.updated} ${DateFormat.Hm().format(forecastData.updatedAt)}',
+                        style: textTheme.labelSmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  if (forecastData.totalGhi > 0)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: colorScheme.primary,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.solar_power,
+                            color: colorScheme.onPrimary,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '${forecastData.totalGhi.toStringAsFixed(2)} kWh/m²',
+                            style: textTheme.titleMedium?.copyWith(
+                              color: colorScheme.onPrimary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ],
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildLegendItem(String label, Color color) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 16,
-          height: 16,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 4),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 12),
-        ),
-      ],
     );
   }
 }

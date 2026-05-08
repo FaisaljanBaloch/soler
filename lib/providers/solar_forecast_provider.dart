@@ -1,19 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/solar_forecast.dart';
 import '../services/open_meteo_service.dart';
-import 'location_provider.dart';
+import 'city_provider.dart';
 
 /// Provider for today's solar forecast data
 /// Automatically fetches forecast when location changes
-final todaysSolarForecastProvider =
-    FutureProvider<ForecastData>((ref) async {
-  // Watch the location provider - will refetch if location changes
-  final location = await ref.watch(locationProvider.future);
+final todaysSolarForecastProvider = FutureProvider<ForecastData>((ref) async {
+  final city = await ref.watch(selectedCityProvider.future);
+  if (city == null) {
+    throw Exception('Select a city to load the forecast.');
+  }
 
-  // Fetch solar forecast for the current location
+  // Fetch solar forecast for the selected city
   return await OpenMeteoService.getTodaysSolarForecast(
-    latitude: location.latitude,
-    longitude: location.longitude,
+    latitude: city.latitude,
+    longitude: city.longitude,
   );
 });
 
@@ -21,10 +22,13 @@ final todaysSolarForecastProvider =
 /// Use ref.refresh(refreshableSolarForecastProvider) to trigger a manual refresh
 final refreshableSolarForecastProvider =
     FutureProvider.autoDispose<ForecastData>((ref) async {
-  final location = await ref.watch(locationProvider.future);
+      final city = await ref.watch(selectedCityProvider.future);
+      if (city == null) {
+        throw Exception('Select a city to load the forecast.');
+      }
 
-  return await OpenMeteoService.getTodaysSolarForecast(
-    latitude: location.latitude,
-    longitude: location.longitude,
-  );
-});
+      return await OpenMeteoService.getTodaysSolarForecast(
+        latitude: city.latitude,
+        longitude: city.longitude,
+      );
+    });

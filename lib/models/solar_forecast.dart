@@ -41,6 +41,17 @@ class ForecastData {
     required this.generatedAt,
   });
 
+  DateTime get updatedAt => generatedAt;
+
+  double get totalGhi {
+    if (hourlyForecasts.isEmpty) return 0;
+    final totalWh = hourlyForecasts.fold(
+      0.0,
+      (sum, forecast) => sum + forecast.ghi,
+    );
+    return totalWh / 1000;
+  }
+
   /// Get maximum GHI value for scaling visualization
   double get maxGhi {
     if (hourlyForecasts.isEmpty) return 0;
@@ -51,11 +62,9 @@ class ForecastData {
   SolarForecastHour? get currentHourForecast {
     final now = DateTime.now();
     final currentHour = now.hour;
-    
+
     try {
-      return hourlyForecasts.firstWhere(
-        (f) => f.timestamp.hour == currentHour,
-      );
+      return hourlyForecasts.firstWhere((f) => f.timestamp.hour == currentHour);
     } catch (e) {
       return null;
     }

@@ -1,0 +1,21 @@
+{
+  "@@locale": "en",
+  "appTitle": "Soler",
+  "selectCity": "Select City",
+  "search": "Search",
+  "settings": "Settings",
+  "location": "Location",
+  "language": "Language",
+  "about": "About",
+  "english": "English",
+  "italian": "Italian",
+  "aboutText": "This app was developed for the CerHack 2024 hackathon, organized by the CERTH research center. The developer is Faisal J.",
+  "solarForecast": "Solar Forecast",
+  "updated": "Updated",
+  "now": "Now",
+  "noForecast": "No forecast available.",
+  "loading": "Loading...",
+  "error": "Error",
+  "noCitySelected": "No city selected",
+  "pullToRefresh": "Pull to refresh"
+}
