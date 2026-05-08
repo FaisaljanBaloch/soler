@@ -66,5 +66,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>SolER needs your location to show solar forecast for your area</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>SolER needs your location to show solar forecast for your area</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>SolER needs your location to show solar forecast for your area</string>
 </dict>
 </plist>
