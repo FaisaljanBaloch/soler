@@ -40,7 +40,7 @@ class AppLocalizationsIt extends AppLocalizations {
       'Questa app è stata sviluppata per l\'hackathon CerHack 2024, organizzato dal centro di ricerca CERTH. Lo sviluppatore è Faisal J.';
 
   @override
-  String get solarForecast => 'Previsione Solare';
+  String get solarForecast => 'Previsione solare di oggi';
 
   @override
   String get updated => 'Aggiornato';

@@ -161,7 +161,7 @@ abstract class AppLocalizations {
   /// No description provided for @solarForecast.
   ///
   /// In en, this message translates to:
-  /// **'Solar Forecast'**
+  /// **'Today\'s Solar Forecast'**
   String get solarForecast;
 
   /// No description provided for @updated.
