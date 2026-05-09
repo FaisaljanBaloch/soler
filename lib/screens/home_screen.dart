@@ -4,6 +4,8 @@ import '../l10n/app_localizations.dart';
 import '../providers/city_provider.dart';
 import '../providers/solar_forecast_provider.dart';
 import '../widgets/forecast_timeline.dart';
+import '../widgets/city_selection_view.dart';
+import '../widgets/solar_tips_section.dart';
 import 'settings_screen.dart';
 
 /// Home screen displaying today's solar forecast
@@ -112,7 +114,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               data: (city) {
                 if (city == null) {
-                  return _buildCitySelection(context);
+                  return const CitySelectionView();
                 }
 
                 final forecastAsync = ref.watch(todaysSolarForecastProvider);
@@ -201,38 +203,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             child: ForecastTimeline(forecastData: forecastData),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(24.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Solar Energy Tips',
-                                style: Theme.of(context).textTheme.titleMedium
-                                    ?.copyWith(fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 12),
-                              _buildTipItem(
-                                'Peak Hours',
-                                'Solar radiation is highest between 10 AM and 3 PM',
-                                Icons.wb_sunny,
-                                context,
-                              ),
-                              _buildTipItem(
-                                'Plan Ahead',
-                                'Schedule high-energy tasks during peak forecast hours',
-                                Icons.schedule,
-                                context,
-                              ),
-                              _buildTipItem(
-                                'Monitor Usage',
-                                'Check back regularly for updated forecasts',
-                                Icons.analytics,
-                                context,
-                              ),
-                            ],
-                          ),
-                        ),
+                        const SolarTipsSection(),
                       ],
                     ),
                   ),
@@ -241,128 +212,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             );
           },
         ),
-      ),
-    );
-  }
-
-  Widget _buildCitySelection(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Text(
-                l10n.selectCity,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 16),
-              Consumer(
-                builder: (context, ref, child) {
-                  final query = ref.watch(citySearchQueryProvider);
-                  final resultsAsync = ref.watch(
-                    citySearchResultsProvider(query),
-                  );
-                  return Column(
-                    children: [
-                      TextField(
-                        onChanged: (query) {
-                          ref.read(citySearchQueryProvider.notifier).state =
-                              query;
-                        },
-                        decoration: InputDecoration(
-                          labelText: l10n.search,
-                          prefixIcon: const Icon(Icons.search),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      resultsAsync.when(
-                        loading: () =>
-                            const Center(child: CircularProgressIndicator()),
-                        error: (error, stack) {
-                          return Center(child: Text('${l10n.error}: $error'));
-                        },
-                        data: (cities) {
-                          if (cities.isEmpty) {
-                            return Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Text(
-                                  l10n.noCitySelected,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                              ),
-                            );
-                          }
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: cities.length,
-                            itemBuilder: (context, index) {
-                              final city = cities[index];
-                              return ListTile(
-                                title: Text(city.name),
-                                subtitle: Text(
-                                  '${city.admin1}, ${city.country}',
-                                ),
-                                onTap: () {
-                                  ref
-                                      .read(selectedCityProvider.notifier)
-                                      .setCity(city);
-                                },
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTipItem(
-    String title,
-    String description,
-    IconData icon,
-    BuildContext context,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: Theme.of(context).colorScheme.primary, size: 20),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  description,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    fontSize: 13,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
