@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:soler/providers/language_provider.dart';
-import 'screens/home_screen.dart';
+import 'screens/main_shell.dart';
 import 'l10n/app_localizations.dart';
 
 void main() {
@@ -15,7 +15,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const lightGreen = Color(0xFFA5D6A7);
     const darkGreen = Color(0xFF1B5E20);
-    const surfaceLight = Color(0xFFFFFFFF);
+    const surfaceLight = Color(0xFFF2F3F4);
 
     const lightColorScheme = ColorScheme(
       brightness: Brightness.light,
@@ -95,7 +95,7 @@ class MainApp extends StatelessWidget {
             locale: language.value?.locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            home: const HomeScreen(),
+            home: const MainShell(),
           );
         },
       ),
