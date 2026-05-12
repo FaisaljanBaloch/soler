@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/app_localizations.dart';
@@ -17,10 +18,33 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  static const _autoRefreshInterval = Duration(minutes: 15);
+  Timer? _autoRefreshTimer;
+
   /// Refresh the forecast data
   Future<void> _refreshForecast() {
     ref.invalidate(todaysSolarForecastProvider);
     return Future.value();
+  }
+
+  void _startAutoRefresh() {
+    _autoRefreshTimer?.cancel();
+    _autoRefreshTimer = Timer.periodic(_autoRefreshInterval, (_) {
+      if (!mounted) return;
+      ref.invalidate(todaysSolarForecastProvider);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startAutoRefresh();
+  }
+
+  @override
+  void dispose() {
+    _autoRefreshTimer?.cancel();
+    super.dispose();
   }
 
   @override

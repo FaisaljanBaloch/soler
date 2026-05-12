@@ -47,12 +47,26 @@ class ForecastTimeline extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final startHour = DateTime(now.year, now.month, now.day, now.hour);
+    final next24End = startHour.add(const Duration(hours: 24));
     final remainingForecasts = forecastData.hourlyForecasts
         .where((forecast) => !forecast.timestamp.isBefore(startHour))
         .toList();
     final displayForecasts = remainingForecasts.isNotEmpty
         ? remainingForecasts
         : forecastData.hourlyForecasts;
+    final next24Forecasts = forecastData.hourlyForecasts
+        .where(
+          (forecast) =>
+              !forecast.timestamp.isBefore(startHour) &&
+              forecast.timestamp.isBefore(next24End),
+        )
+        .toList();
+    final sortedNext24 = [...next24Forecasts]
+      ..sort((a, b) => b.ghi.compareTo(a.ghi));
+    final peakTimestamps = sortedNext24
+        .take(3)
+        .map((forecast) => forecast.timestamp.millisecondsSinceEpoch)
+        .toSet();
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -66,6 +80,9 @@ class ForecastTimeline extends StatelessWidget {
             context,
             l10n,
             isNowLabel: index == 0,
+            isPeak: peakTimestamps.contains(
+              displayForecasts[index].timestamp.millisecondsSinceEpoch,
+            ),
           ),
         ),
       ),
@@ -80,11 +97,13 @@ class ForecastTimeline extends StatelessWidget {
     BuildContext context,
     AppLocalizations l10n, {
     bool isNowLabel = false,
+    bool isPeak = false,
   }) {
     final color = _getColorForIntensity(forecast.ghi, maxGhi, colorScheme);
     final barHeight = (forecast.ghi / (maxGhi + 100)) * 150; // Max height 150
     final timeFormat = DateFormat('HH:mm');
     final label = isNowLabel ? l10n.now : timeFormat.format(forecast.timestamp);
+    final peakBorderColor = colorScheme.tertiary;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -101,6 +120,10 @@ class ForecastTimeline extends StatelessWidget {
               ),
             ),
           ),
+          if (isPeak) ...[
+            Icon(Icons.bolt, size: 14, color: peakBorderColor),
+            const SizedBox(height: 4),
+          ],
           // Bar chart
           Container(
             width: 32,
@@ -111,7 +134,19 @@ class ForecastTimeline extends StatelessWidget {
                 topLeft: Radius.circular(4),
                 topRight: Radius.circular(4),
               ),
-              border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
+              border: Border.all(
+                color: isPeak ? peakBorderColor : color.withValues(alpha: 0.3),
+                width: isPeak ? 2 : 1,
+              ),
+              boxShadow: isPeak
+                  ? [
+                      BoxShadow(
+                        color: peakBorderColor.withValues(alpha: 0.35),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ]
+                  : null,
             ),
           ),
           // GHI value
