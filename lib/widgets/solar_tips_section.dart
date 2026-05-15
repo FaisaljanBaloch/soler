@@ -1,36 +1,37 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 
 class SolarTipsSection extends StatelessWidget {
   const SolarTipsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Solar Energy Tips',
+            l10n.solarTipsTitle,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
-          const _TipItem(
-            title: 'Peak Hours',
-            description: 'Solar radiation is highest between 10 AM and 3 PM',
+          _TipItem(
+            title: l10n.solarTipPeakHoursTitle,
+            description: l10n.solarTipPeakHoursDescription,
             icon: Icons.wb_sunny,
           ),
-          const _TipItem(
-            title: 'Plan Ahead',
-            description:
-                'Schedule high-energy tasks during peak forecast hours',
+          _TipItem(
+            title: l10n.solarTipPlanAheadTitle,
+            description: l10n.solarTipPlanAheadDescription,
             icon: Icons.schedule,
           ),
-          const _TipItem(
-            title: 'Monitor Usage',
-            description: 'Check back regularly for updated forecasts',
+          _TipItem(
+            title: l10n.solarTipMonitorUsageTitle,
+            description: l10n.solarTipMonitorUsageDescription,
             icon: Icons.analytics,
           ),
         ],

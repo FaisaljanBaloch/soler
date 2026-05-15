@@ -75,6 +75,52 @@ class AppLocalizationsIt extends AppLocalizations {
       'Suggerimenti rapidi per pianificare e monitorare i consumi.';
 
   @override
+  String get optimalNoStrongWindow =>
+      'Nessuna finestra solare forte nelle prossime 24 ore.';
+
+  @override
+  String get optimalApplianceWindowTitle =>
+      'Finestra ottimale per gli elettrodomestici';
+
+  @override
+  String optimalTopHoursLabel(Object count) {
+    return 'Le migliori $count ore secondo la previsione solare';
+  }
+
+  @override
+  String get optimalChipWashingMachine => 'Lavatrice';
+
+  @override
+  String get optimalChipDishwasher => 'Lavastoviglie';
+
+  @override
+  String get optimalChipEvCharging => 'Ricarica EV';
+
+  @override
+  String get solarTipsTitle => 'Consigli per l\'energia solare';
+
+  @override
+  String get solarTipPeakHoursTitle => 'Ore di picco';
+
+  @override
+  String get solarTipPeakHoursDescription =>
+      'La radiazione solare e piu alta tra le 10 e le 15';
+
+  @override
+  String get solarTipPlanAheadTitle => 'Pianifica in anticipo';
+
+  @override
+  String get solarTipPlanAheadDescription =>
+      'Programma le attivita ad alto consumo nelle ore migliori';
+
+  @override
+  String get solarTipMonitorUsageTitle => 'Monitora i consumi';
+
+  @override
+  String get solarTipMonitorUsageDescription =>
+      'Controlla spesso per previsioni aggiornate';
+
+  @override
   String get about => 'Informazioni';
 
   @override
@@ -85,7 +131,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get aboutText =>
-      'Questa app è stata sviluppata per l\'hackathon CerHack 2024, organizzato dal centro di ricerca CERTH. Lo sviluppatore è Faisal J.';
+      'Questa app e stata sviluppata per l\'hackathon EMS - Energia e Mobilita Sostenibile APS nel 2026. Sviluppata da Faisal Jan, studente di Data Science for Management presso l\'Universita di Parma.';
 
   @override
   String get solarForecast => 'Previsione solare di oggi';

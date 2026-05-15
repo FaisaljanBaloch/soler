@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/solar_forecast.dart';
 import '../services/solar_recommendation_service.dart';
 
@@ -16,6 +17,7 @@ class OptimalUseCard extends StatelessWidget {
     );
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
 
     if (recommendation == null) {
       return Card(
@@ -23,7 +25,7 @@ class OptimalUseCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'No strong solar window in the next 24 hours.',
+            l10n.optimalNoStrongWindow,
             style: textTheme.bodyMedium?.copyWith(
               color: colorScheme.onSurfaceVariant,
             ),
@@ -57,10 +59,14 @@ class OptimalUseCard extends StatelessWidget {
               children: [
                 Icon(Icons.bolt, color: colorScheme.tertiary),
                 const SizedBox(width: 8),
-                Text(
-                  'Optimal appliance window',
-                  style: textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    l10n.optimalApplianceWindowTitle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
@@ -74,7 +80,7 @@ class OptimalUseCard extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              'Top ${peakLabels.length} hours by solar forecast',
+              l10n.optimalTopHoursLabel(peakLabels.length),
               style: textTheme.bodySmall?.copyWith(
                 color: colorScheme.onSurfaceVariant,
               ),
@@ -97,13 +103,13 @@ class OptimalUseCard extends StatelessWidget {
                   .toList(),
             ),
             const SizedBox(height: 12),
-            const Wrap(
+            Wrap(
               spacing: 8,
               runSpacing: 8,
               children: [
-                Chip(label: Text('Washing machine')),
-                Chip(label: Text('Dishwasher')),
-                Chip(label: Text('EV charging')),
+                Chip(label: Text(l10n.optimalChipWashingMachine)),
+                Chip(label: Text(l10n.optimalChipDishwasher)),
+                Chip(label: Text(l10n.optimalChipEvCharging)),
               ],
             ),
           ],

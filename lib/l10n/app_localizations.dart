@@ -218,6 +218,84 @@ abstract class AppLocalizations {
   /// **'Quick guidance for planning and monitoring usage.'**
   String get infoTipsDescription;
 
+  /// No description provided for @optimalNoStrongWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'No strong solar window in the next 24 hours.'**
+  String get optimalNoStrongWindow;
+
+  /// No description provided for @optimalApplianceWindowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Optimal appliance window'**
+  String get optimalApplianceWindowTitle;
+
+  /// No description provided for @optimalTopHoursLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Top {count} hours by solar forecast'**
+  String optimalTopHoursLabel(Object count);
+
+  /// No description provided for @optimalChipWashingMachine.
+  ///
+  /// In en, this message translates to:
+  /// **'Washing machine'**
+  String get optimalChipWashingMachine;
+
+  /// No description provided for @optimalChipDishwasher.
+  ///
+  /// In en, this message translates to:
+  /// **'Dishwasher'**
+  String get optimalChipDishwasher;
+
+  /// No description provided for @optimalChipEvCharging.
+  ///
+  /// In en, this message translates to:
+  /// **'EV charging'**
+  String get optimalChipEvCharging;
+
+  /// No description provided for @solarTipsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar Energy Tips'**
+  String get solarTipsTitle;
+
+  /// No description provided for @solarTipPeakHoursTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Peak Hours'**
+  String get solarTipPeakHoursTitle;
+
+  /// No description provided for @solarTipPeakHoursDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar radiation is highest between 10 AM and 3 PM'**
+  String get solarTipPeakHoursDescription;
+
+  /// No description provided for @solarTipPlanAheadTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan Ahead'**
+  String get solarTipPlanAheadTitle;
+
+  /// No description provided for @solarTipPlanAheadDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule high-energy tasks during peak forecast hours'**
+  String get solarTipPlanAheadDescription;
+
+  /// No description provided for @solarTipMonitorUsageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitor Usage'**
+  String get solarTipMonitorUsageTitle;
+
+  /// No description provided for @solarTipMonitorUsageDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Check back regularly for updated forecasts'**
+  String get solarTipMonitorUsageDescription;
+
   /// No description provided for @about.
   ///
   /// In en, this message translates to:
@@ -239,7 +317,7 @@ abstract class AppLocalizations {
   /// No description provided for @aboutText.
   ///
   /// In en, this message translates to:
-  /// **'This app was developed for the CerHack 2024 hackathon, organized by the CERTH research center. The developer is Faisal J.'**
+  /// **'This app was developed for the EMS - Energia e Mobilita Sostenibile APS hackathon in 2026. Developed by Faisal Jan, a student of Data Science for Management at the University of Parma.'**
   String get aboutText;
 
   /// No description provided for @solarForecast.

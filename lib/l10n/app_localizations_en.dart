@@ -75,6 +75,51 @@ class AppLocalizationsEn extends AppLocalizations {
       'Quick guidance for planning and monitoring usage.';
 
   @override
+  String get optimalNoStrongWindow =>
+      'No strong solar window in the next 24 hours.';
+
+  @override
+  String get optimalApplianceWindowTitle => 'Optimal appliance window';
+
+  @override
+  String optimalTopHoursLabel(Object count) {
+    return 'Top $count hours by solar forecast';
+  }
+
+  @override
+  String get optimalChipWashingMachine => 'Washing machine';
+
+  @override
+  String get optimalChipDishwasher => 'Dishwasher';
+
+  @override
+  String get optimalChipEvCharging => 'EV charging';
+
+  @override
+  String get solarTipsTitle => 'Solar Energy Tips';
+
+  @override
+  String get solarTipPeakHoursTitle => 'Peak Hours';
+
+  @override
+  String get solarTipPeakHoursDescription =>
+      'Solar radiation is highest between 10 AM and 3 PM';
+
+  @override
+  String get solarTipPlanAheadTitle => 'Plan Ahead';
+
+  @override
+  String get solarTipPlanAheadDescription =>
+      'Schedule high-energy tasks during peak forecast hours';
+
+  @override
+  String get solarTipMonitorUsageTitle => 'Monitor Usage';
+
+  @override
+  String get solarTipMonitorUsageDescription =>
+      'Check back regularly for updated forecasts';
+
+  @override
   String get about => 'About';
 
   @override
@@ -85,7 +130,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutText =>
-      'This app was developed for the CerHack 2024 hackathon, organized by the CERTH research center. The developer is Faisal J.';
+      'This app was developed for the EMS - Energia e Mobilita Sostenibile APS hackathon in 2026. Developed by Faisal Jan, a student of Data Science for Management at the University of Parma.';
 
   @override
   String get solarForecast => 'Today\'s Solar Forecast';
