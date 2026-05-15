@@ -27,6 +27,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language => 'Language';
 
   @override
+  String get darkMode => 'Dark mode';
+
+  @override
+  String get information => 'Information';
+
+  @override
+  String get infoForecastTitle => 'Hourly solar forecast';
+
+  @override
+  String get infoForecastDescription =>
+      'See the next 24 hours of solar intensity in a timeline.';
+
+  @override
+  String get infoOptimalTitle => 'Optimal use window';
+
+  @override
+  String get infoOptimalDescription =>
+      'Highlights the top forecast hours and a recommended window.';
+
+  @override
+  String get infoNotificationsTitle => 'Smart notifications';
+
+  @override
+  String get infoNotificationsDescription =>
+      'Alerts before and during high-production windows.';
+
+  @override
+  String get infoAutoRefreshTitle => 'Auto refresh';
+
+  @override
+  String get infoAutoRefreshDescription =>
+      'Updates forecasts automatically every 15 minutes.';
+
+  @override
+  String get infoCityTitle => 'City selection';
+
+  @override
+  String get infoCityDescription =>
+      'Search and save a city for localized forecasts.';
+
+  @override
+  String get infoTipsTitle => 'Solar tips';
+
+  @override
+  String get infoTipsDescription =>
+      'Quick guidance for planning and monitoring usage.';
+
+  @override
   String get about => 'About';
 
   @override

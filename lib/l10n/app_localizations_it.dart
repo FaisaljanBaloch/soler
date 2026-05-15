@@ -27,6 +27,54 @@ class AppLocalizationsIt extends AppLocalizations {
   String get language => 'Lingua';
 
   @override
+  String get darkMode => 'Modalita scura';
+
+  @override
+  String get information => 'Funzionalita';
+
+  @override
+  String get infoForecastTitle => 'Previsione solare oraria';
+
+  @override
+  String get infoForecastDescription =>
+      'Vedi le prossime 24 ore di intensita solare in una timeline.';
+
+  @override
+  String get infoOptimalTitle => 'Finestra di uso ottimale';
+
+  @override
+  String get infoOptimalDescription =>
+      'Evidenzia le ore migliori e una finestra consigliata.';
+
+  @override
+  String get infoNotificationsTitle => 'Notifiche intelligenti';
+
+  @override
+  String get infoNotificationsDescription =>
+      'Avvisi prima e durante le finestre di alta produzione.';
+
+  @override
+  String get infoAutoRefreshTitle => 'Aggiornamento automatico';
+
+  @override
+  String get infoAutoRefreshDescription =>
+      'Aggiorna le previsioni ogni 15 minuti.';
+
+  @override
+  String get infoCityTitle => 'Selezione citta';
+
+  @override
+  String get infoCityDescription =>
+      'Cerca e salva una citta per previsioni localizzate.';
+
+  @override
+  String get infoTipsTitle => 'Consigli solari';
+
+  @override
+  String get infoTipsDescription =>
+      'Suggerimenti rapidi per pianificare e monitorare i consumi.';
+
+  @override
   String get about => 'Informazioni';
 
   @override

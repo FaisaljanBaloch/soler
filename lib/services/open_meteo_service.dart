@@ -6,7 +6,7 @@ import '../models/solar_forecast.dart';
 class OpenMeteoService {
   static const String _baseUrl = 'https://api.open-meteo.com/v1/forecast';
 
-  /// Fetch today's solar forecast for given coordinates
+  /// Fetch solar forecast for given coordinates
   /// Returns [ForecastData] with hourly solar irradiance (GHI) values
   static Future<ForecastData> getTodaysSolarForecast({
     required double latitude,
@@ -18,7 +18,7 @@ class OpenMeteoService {
           'latitude': latitude.toStringAsFixed(5),
           'longitude': longitude.toStringAsFixed(5),
           'hourly': 'shortwave_radiation',
-          'forecast_days': '1',
+          'forecast_days': '2',
           'timezone': 'auto',
         },
       );

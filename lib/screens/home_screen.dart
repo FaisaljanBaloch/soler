@@ -2,10 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/app_localizations.dart';
+import '../models/solar_forecast.dart';
 import '../providers/city_provider.dart';
 import '../providers/solar_forecast_provider.dart';
+import '../services/solar_notification_service.dart';
 import '../widgets/forecast_timeline.dart';
 import '../widgets/city_selection_view.dart';
+import '../widgets/optimal_use_card.dart';
 import '../widgets/solar_tips_section.dart';
 import 'settings_screen.dart';
 
@@ -51,6 +54,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
+
+    ref.listen<AsyncValue<ForecastData>>(todaysSolarForecastProvider, (
+      previous,
+      next,
+    ) {
+      next.whenData(SolarNotificationService.scheduleForForecast);
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -219,6 +229,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           forecastData: forecastData,
                           cityName: city.name,
                         ),
+                        OptimalUseCard(forecastData: forecastData),
                         const Divider(),
                         SizedBox(
                           height: 250,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:soler/l10n/app_localizations.dart';
 import '../models/solar_forecast.dart';
+import '../services/solar_recommendation_service.dart';
 
 /// Widget that displays hourly solar forecast as a horizontally scrollable timeline
 /// Each hour shows a bar chart with intensity mapped to color
@@ -46,27 +47,22 @@ class ForecastTimeline extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
-    final startHour = DateTime(now.year, now.month, now.day, now.hour);
-    final next24End = startHour.add(const Duration(hours: 24));
-    final remainingForecasts = forecastData.hourlyForecasts
-        .where((forecast) => !forecast.timestamp.isBefore(startHour))
-        .toList();
-    final displayForecasts = remainingForecasts.isNotEmpty
-        ? remainingForecasts
+    final next24Forecasts = SolarRecommendationService.next24Forecasts(
+      forecastData,
+      now,
+    );
+    final displayForecasts = next24Forecasts.isNotEmpty
+        ? next24Forecasts
         : forecastData.hourlyForecasts;
-    final next24Forecasts = forecastData.hourlyForecasts
-        .where(
-          (forecast) =>
-              !forecast.timestamp.isBefore(startHour) &&
-              forecast.timestamp.isBefore(next24End),
-        )
-        .toList();
-    final sortedNext24 = [...next24Forecasts]
-      ..sort((a, b) => b.ghi.compareTo(a.ghi));
-    final peakTimestamps = sortedNext24
-        .take(3)
-        .map((forecast) => forecast.timestamp.millisecondsSinceEpoch)
-        .toSet();
+    final recommendation = SolarRecommendationService.buildRecommendation(
+      forecastData,
+      now: now,
+    );
+    final peakTimestamps = recommendation == null
+        ? <int>{}
+        : recommendation.peakHours
+              .map((forecast) => forecast.timestamp.millisecondsSinceEpoch)
+              .toSet();
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

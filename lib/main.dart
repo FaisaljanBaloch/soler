@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:soler/providers/language_provider.dart';
-import 'screens/main_shell.dart';
+import 'package:soler/providers/theme_provider.dart';
+import 'screens/home_screen.dart';
 import 'l10n/app_localizations.dart';
+import 'services/solar_notification_service.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SolarNotificationService.initialize();
   runApp(const MainApp());
 }
 
@@ -67,6 +71,11 @@ class MainApp extends StatelessWidget {
       child: Consumer(
         builder: (context, ref, _) {
           final language = ref.watch(selectedLanguageProvider);
+          final themeModeAsync = ref.watch(themeModeProvider);
+          final themeMode = themeModeAsync.maybeWhen(
+            data: (mode) => mode,
+            orElse: () => ThemeMode.light,
+          );
           return MaterialApp(
             onGenerateTitle: (context) =>
                 AppLocalizations.of(context)!.appTitle,
@@ -90,12 +99,12 @@ class MainApp extends StatelessWidget {
                 elevation: 1,
               ),
             ),
-            themeMode: ThemeMode.system,
+            themeMode: themeMode,
             debugShowCheckedModeBanner: false,
             locale: language.value?.locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            home: const MainShell(),
+            home: const HomeScreen(),
           );
         },
       ),

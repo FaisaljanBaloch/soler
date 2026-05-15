@@ -93,7 +93,19 @@ const _defaultCities = [
   ),
 ];
 
-final citySearchQueryProvider = StateProvider<String>((ref) => '');
+final citySearchQueryProvider =
+    NotifierProvider<CitySearchQueryNotifier, String>(
+      CitySearchQueryNotifier.new,
+    );
+
+class CitySearchQueryNotifier extends Notifier<String> {
+  @override
+  String build() => '';
+
+  void setQuery(String value) {
+    state = value;
+  }
+}
 
 final citySearchResultsProvider = FutureProvider.family<List<City>, String>((
   ref,

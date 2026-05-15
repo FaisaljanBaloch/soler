@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/city_provider.dart';
 import '../providers/language_provider.dart';
+import '../providers/theme_provider.dart';
 import 'about_screen.dart';
+import 'information_screen.dart';
 import 'language_settings_screen.dart';
 import 'location_settings_screen.dart';
 
@@ -14,7 +16,13 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedCityAsync = ref.watch(selectedCityProvider);
     final languageAsync = ref.watch(selectedLanguageProvider);
+    final themeModeAsync = ref.watch(themeModeProvider);
     final l10n = AppLocalizations.of(context)!;
+    final isDarkMode = themeModeAsync.maybeWhen(
+      data: (mode) => mode == ThemeMode.dark,
+      orElse: () => false,
+    );
+    final canToggleTheme = themeModeAsync.hasValue;
     final locationSubtitle = selectedCityAsync.maybeWhen(
       data: (city) => city == null ? l10n.noCitySelected : city.name,
       orElse: () => '${l10n.loading}...',
@@ -53,6 +61,28 @@ class SettingsScreen extends ConsumerWidget {
                 MaterialPageRoute(
                   builder: (_) => const LanguageSettingsScreen(),
                 ),
+              );
+            },
+          ),
+          SwitchListTile.adaptive(
+            secondary: const Icon(Icons.dark_mode_outlined),
+            title: Text(l10n.darkMode),
+            value: isDarkMode,
+            onChanged: canToggleTheme
+                ? (value) {
+                    ref
+                        .read(themeModeProvider.notifier)
+                        .setThemeMode(value ? ThemeMode.dark : ThemeMode.light);
+                  }
+                : null,
+          ),
+          ListTile(
+            leading: const Icon(Icons.article_outlined),
+            title: Text(l10n.information),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const InformationScreen()),
               );
             },
           ),

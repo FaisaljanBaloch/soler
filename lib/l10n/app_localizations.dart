@@ -134,6 +134,90 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get language;
 
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode'**
+  String get darkMode;
+
+  /// No description provided for @information.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get information;
+
+  /// No description provided for @infoForecastTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hourly solar forecast'**
+  String get infoForecastTitle;
+
+  /// No description provided for @infoForecastDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'See the next 24 hours of solar intensity in a timeline.'**
+  String get infoForecastDescription;
+
+  /// No description provided for @infoOptimalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Optimal use window'**
+  String get infoOptimalTitle;
+
+  /// No description provided for @infoOptimalDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlights the top forecast hours and a recommended window.'**
+  String get infoOptimalDescription;
+
+  /// No description provided for @infoNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart notifications'**
+  String get infoNotificationsTitle;
+
+  /// No description provided for @infoNotificationsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts before and during high-production windows.'**
+  String get infoNotificationsDescription;
+
+  /// No description provided for @infoAutoRefreshTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto refresh'**
+  String get infoAutoRefreshTitle;
+
+  /// No description provided for @infoAutoRefreshDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Updates forecasts automatically every 15 minutes.'**
+  String get infoAutoRefreshDescription;
+
+  /// No description provided for @infoCityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'City selection'**
+  String get infoCityTitle;
+
+  /// No description provided for @infoCityDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Search and save a city for localized forecasts.'**
+  String get infoCityDescription;
+
+  /// No description provided for @infoTipsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar tips'**
+  String get infoTipsTitle;
+
+  /// No description provided for @infoTipsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick guidance for planning and monitoring usage.'**
+  String get infoTipsDescription;
+
   /// No description provided for @about.
   ///
   /// In en, this message translates to:
