@@ -28,7 +28,7 @@ class CitySelectionView extends ConsumerWidget {
         const SizedBox(height: 16),
         TextField(
           onChanged: (query) {
-            ref.read(citySearchQueryProvider.notifier).state = query;
+            ref.read(citySearchQueryProvider.notifier).setQuery(query);
           },
           decoration: InputDecoration(
             labelText: l10n.search,

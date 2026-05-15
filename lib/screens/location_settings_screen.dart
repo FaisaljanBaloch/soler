@@ -38,7 +38,7 @@ class LocationSettingsScreen extends ConsumerWidget {
                   border: const OutlineInputBorder(),
                 ),
                 onChanged: (value) {
-                  ref.read(citySearchQueryProvider.notifier).state = value;
+                  ref.read(citySearchQueryProvider.notifier).setQuery(value);
                 },
               ),
             ),
